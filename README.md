@@ -1,6 +1,6 @@
 ### Goal
 
-This project is an example of one possible authentication flow using [react](https://github.com/facebook/react), [redux](https://github.com/rackt/redux), [react-router](https://github.com/rackt/react-router), [redux-router](https://github.com/rackt/redux-router), and [JSON web tokens (JWT)](http://jwt.io/). It is based on the implementation of a [higher-order component](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)
+This project is an example of one possible authentication flow using [react](https://github.com/facebook/react), [redux](https://github.com/rackt/redux), [react-router](https://github.com/rackt/react-router), [react-router-redux](https://github.com/reactjs/react-router-redux), and [JSON web tokens (JWT)](http://jwt.io/). It is based on the implementation of a [higher-order component](https://medium.com/@dan_abramov/mixins-are-dead-long-live-higher-order-components-94a0d2f9e750)
 to wrap protected views and perform authentication logic prior to rendering them.
 
 **Note:** The focus here is on the client-side flow. The server included in this example is for demonstration purposes only.
@@ -45,19 +45,12 @@ the higher-order component. The function takes a single argument: a child compon
 
 ```javascript
 import { UserAuthWrapper } from 'redux-auth-wrapper'
-import { pushState } from 'redux-router';
+import { push } from 'react-router-redux';
 
 export const requireAuthentication = UserAuthWrapper({
   authSelector: state => state.auth,
   predicate: auth => auth.isAuthenticated,
-  // convert history location descriptor from 2.0 to 1.0
-  redirectAction: ({ pathname, query }) => {
-    if (query.redirect) {
-      return pushState(null, `${pathname}?next=${query.redirect}`)
-    } else {
-      return pushState(null, pathname)
-    }
-  },
+  redirectAction: push,
   wrapperDisplayName: 'UserIsJWTAuthenticated'
 })
 ```
