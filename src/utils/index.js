@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import { UserAuthWrapper } from 'redux-auth-wrapper'
-import { pushState } from 'redux-router';
+import { push } from 'react-router-redux';
 
 export function createConstants(...constants) {
     return constants.reduce((acc, constant) => {
@@ -38,13 +38,6 @@ export function parseJSON(response) {
 export const requireAuthentication = UserAuthWrapper({
   authSelector: state => state.auth,
   predicate: auth => auth.isAuthenticated,
-  // convert history location descriptor from 2.0 to 1.0
-  redirectAction: ({ pathname, query }) => {
-    if (query.redirect) {
-      return pushState(null, `${pathname}?next=${query.redirect}`)
-    } else {
-      return pushState(null, pathname)
-    }
-  },
+  redirectAction: push,
   wrapperDisplayName: 'UserIsJWTAuthenticated'
 })

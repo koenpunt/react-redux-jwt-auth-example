@@ -1,6 +1,6 @@
 import { checkHttpStatus, parseJSON } from '../utils';
 import {LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA} from '../constants';
-import { pushState } from 'redux-router';
+import { push } from 'react-router-redux'
 import jwtDecode from 'jwt-decode';
 
 export function loginUserSuccess(token) {
@@ -40,7 +40,7 @@ export function logout() {
 export function logoutAndRedirect() {
     return (dispatch, state) => {
         dispatch(logout());
-        dispatch(pushState(null, '/login'));
+        dispatch(push('/login'));
     }
 }
 
@@ -62,7 +62,7 @@ export function loginUser(email, password, redirect="/") {
                 try {
                     let decoded = jwtDecode(response.token);
                     dispatch(loginUserSuccess(response.token));
-                    dispatch(pushState(null, redirect));
+                    dispatch(push(redirect));
                 } catch (e) {
                     dispatch(loginUserFailure({
                         response: {
@@ -111,7 +111,7 @@ export function fetchProtectedData(token) {
             .catch(error => {
                 if(error.response.status === 401) {
                   dispatch(loginUserFailure(error));
-                  dispatch(pushState(null, '/login'));
+                  dispatch(push('/login'));
                 }
             })
        }

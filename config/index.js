@@ -19,12 +19,11 @@ config.set('webpack_host',  'localhost');
 config.set('webpack_port',  3000); // eslint-disable-line
 
 config.set('vendor_dependencies', [
-  'history',
   'react',
   'react-redux',
   'react-router',
-  'redux',
-  'redux-router'
+  'react-router-redux',
+  'redux'
 ]);
 
 /*  *********************************************
