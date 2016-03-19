@@ -1,13 +1,13 @@
 import rootReducer from '../reducers';
 import thunk from 'redux-thunk';
 import routes from '../routes';
-import { reduxReactRouter } from 'react-router-redux';
+import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
 import {applyMiddleware, compose, createStore} from 'redux';
 import createLogger from 'redux-logger';
 import { syncHistory } from 'react-router-redux'
 
-export default function configureStore(history, initialState) {
-  const routingMiddleware = syncHistory(history)
+export default function configureStore(baseHistory, initialState) {
+  const routingMiddleware = routerMiddleware(baseHistory)
 
   const logger = createLogger();
 
@@ -20,7 +20,7 @@ export default function configureStore(history, initialState) {
     middleware
   )
 
-  routingMiddleware.listenForReplays(store)
+  const history = syncHistoryWithStore(baseHistory, store)
 
   if (module.hot) {
     module.hot
@@ -30,6 +30,6 @@ export default function configureStore(history, initialState) {
     });
   }
 
-  return store;
+  return { store, history };
 
 }

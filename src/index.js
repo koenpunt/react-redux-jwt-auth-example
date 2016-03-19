@@ -8,10 +8,10 @@ import configureStore from './store/configureStore';
 import {loginUserSuccess} from './actions';
 
 const target = document.getElementById('root');
-const store = configureStore(hashHistory, window.__INITIAL_STATE__);
+const { store, history } = configureStore(hashHistory, window.__INITIAL_STATE__);
 
 const node = (
-    <Root store={store} history={hashHistory} />
+    <Root store={store} history={history} />
 );
 
 let token = localStorage.getItem('token');
